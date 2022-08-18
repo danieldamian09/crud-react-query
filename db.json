@@ -1,0 +1,12 @@
+{
+  "clientes": [
+    {
+      "nombre": "Humberto",
+      "empresa": "H.R FronEnd",
+      "email": "humbertorivero9@gmail.com",
+      "telefono": "01149458678",
+      "notas": "Notas",
+      "id": 1
+    }
+  ]
+}
