@@ -1,28 +1,22 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { obtenerClienteAPI } from '../service/serviceClientes';
 
 const VerCliente = () => {
 	const [cliente, setCliente] = useState({});
 	const [cargando, setCargando] = useState(true);
 
-	const {id} = useParams();
-
-	const obtenerClienteAPI = async () => {
-		try {
-			const url = `http://localhost:4000/clientes/${id}`;
-			const respuesta = await fetch(url);
-			const resultado = await respuesta.json();
-			setCliente(resultado);
-		} catch (error) {
-			console.log(error);
-		}
-
-		setCargando(!cargando);
-	};
+	const { id } = useParams();
 
 	useEffect(() => {
-		obtenerClienteAPI();
+		obtenerClienteAPI(id).then(cliente => {
+			setCliente(cliente);
+			setCargando(!cargando);
+		}).catch(() => {
+			alert("Hubo un error");
+			setCargando(!cargando);
+		})
 	}, []);
 
 	return (

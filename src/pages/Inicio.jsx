@@ -1,21 +1,16 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Cliente from "../components/Cliente";
+import { eliminarClienteAPI, obtenerClientesAPI } from '../service/serviceClientes';
 
 function Inicio() {
+
 	const [clientes, setClientes] = useState([]);
 
-	// Realizar esta peticiones GET con react-query
-	const obtenerClientesAPI = async () => {
-		try {
-			const url = "http://localhost:4000/clientes";
-			const respuesta = await fetch(url);
-			const resultado = await respuesta.json();
-			setClientes(resultado);
-		} catch (error) {}
-	};
 
 	useEffect(() => {
-		obtenerClientesAPI();
+		obtenerClientesAPI().then(clientes => {
+			setClientes(clientes);
+		})
 	}, []);
 
 	// Realizar esta peticione DELETE con react-query
@@ -23,24 +18,14 @@ function Inicio() {
 		// console.log("Eliminar", id);
 		const confirmar = confirm("¿Deseas eliminar este cliente")
 
-		// console.log(confirmar)
-
 		// Realizar el llamado a la API
 		if (confirmar) {
-			try {
-				const url = `http://localhost:4000/clientes/${id}`
-				const respuesta = await fetch(url, {
-					method:'DELETE'
-				})
-
-				await respuesta.json()
+			
+			eliminarClienteAPI(id)
 
 				// Actualizar el estado
 				const arrayClientesActualizado = clientes.filter(cliente => cliente.id !== id)
 				setClientes(arrayClientesActualizado)
-			} catch (error) {
-				console.log(error);
-			}
 		}
 	}
 
@@ -59,7 +44,7 @@ function Inicio() {
 					</tr>
 				</thead>
 				<tbody>
-					{clientes.map((cliente) => (
+					{clientes?.map((cliente) => (
 						<Cliente 
               key={cliente.id}
 							cliente={cliente}

@@ -1,4 +1,5 @@
-import {useState} from "react";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import {ReactQueryDevtools} from "react-query/devtools";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Layout from "./layout/Layout";
 import Inicio from "./pages/Inicio";
@@ -7,9 +8,12 @@ import EditarCliente from "./pages/EditarCliente";
 import VerCliente from "./pages/VerCliente";
 import Pruebas from "./pages/Pruebas";
 
+const queryClient = new QueryClient
+
 function App() {
 	return (
-		<BrowserRouter>
+		<QueryClientProvider client={queryClient}>
+			<BrowserRouter>
 			<Routes>
 				<Route path="/clientes" element={<Layout />}>
 					<Route index element={<Inicio />} />
@@ -18,8 +22,10 @@ function App() {
 					<Route path=":id" element={<VerCliente />} />
 					<Route path="pruebas" element={<Pruebas />} />
 				</Route>
-			</Routes>
+				</Routes>
+				<ReactQueryDevtools />
 		</BrowserRouter>
+		</QueryClientProvider>
 	);
 }
 

@@ -2,6 +2,7 @@ import {Formik, Form, Field} from "formik";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {object} from "yup";
+import { crearClienteAPI } from '../service/serviceClientes';
 import Alerta from "./Alerta";
 import Spinner from "./Spinner";
 
@@ -26,27 +27,13 @@ function Formulario({cliente, cargando}) {
 	});
 
 	// Realizar esta peticion post con React-Query
-	// evento Submit
 	const handleSubmit = async (values) => {
-		try {
-			const url = "http://localhost:4000/clientes";
-
-			const respuesta = await fetch(url, {
-				method: "POST",
-				body: JSON.stringify(values),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
-			console.log(respuesta);
-			const resultado = await respuesta.json();
-			console.log(resultado);
+		
+		crearClienteAPI(values)
 
 			// para redirecionar al usuario
 			navigate("/clientes");
-		} catch (error) {
-			console.log(error);
-		}
+
 	};
 
 	return cargando ? (
