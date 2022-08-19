@@ -6,6 +6,7 @@ function Inicio() {
 
 	const [clientes, setClientes] = useState([]);
 
+	console.log(clientes);
 
 	useEffect(() => {
 		obtenerClientesAPI().then(clientes => {

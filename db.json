@@ -1,3 +1,12 @@
 {
-  "clientes": []
+  "clientes": [
+    {
+      "nombre": "Humberto Rivero",
+      "empresa": "Digital House",
+      "email": "humbertorivero9@gmail.com",
+      "telefono": "1149458678",
+      "notas": "Profesor DH",
+      "id": 1
+    }
+  ]
 }
