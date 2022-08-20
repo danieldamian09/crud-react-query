@@ -1,25 +1,12 @@
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {} from "react-query"
+import { useParams } from "react-router-dom";
 import Formulario from "../components/Formulario";
 import { obtenerClienteAPI } from '../service/serviceClientes';
 
 function EditarCliente() {
-	const [cliente, setCliente] = useState({});
-	const [cargando, setCargando] = useState(true);
-
 	const { id } = useParams();
 	
-
-	useEffect(() => {
-		obtenerClienteAPI(id).then(cliente => {
-			setCliente(cliente);
-			setCargando(!cargando);
-		}).catch(() => {
-			alert("Hubo un error");
-			setCargando(!cargando);
-		});
-		
-	}, []);
+	const {data, isLoading} = useQuery("obtenerClienteIdFormulario", () => obtenerClienteAPI(id))
 
 
 	return (
@@ -29,8 +16,8 @@ function EditarCliente() {
 				Utiliza este formulario para editar datos de un cliente
 			</p>
 
-			{cliente.nombre ? (
-				<Formulario cliente={cliente} cargando={cargando}  /> 
+			{data.nombre ? (
+				<Formulario cliente={data} cargando={isLoading}  /> 
 			) : (
 				<p>Cliente ID no valido</p>
 			)}

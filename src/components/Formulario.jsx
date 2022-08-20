@@ -1,4 +1,5 @@
 import {Formik, Form, Field} from "formik";
+import { useMutation, useQueryClient } from 'react-query';
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {object} from "yup";
@@ -6,7 +7,16 @@ import { crearClienteAPI } from '../service/serviceClientes';
 import Alerta from "./Alerta";
 import Spinner from "./Spinner";
 
-function Formulario({cliente, cargando}) {
+function Formulario({ cliente }) {
+	
+	const queryClient = useQueryClient()
+	
+	const { data, isLoading, error, mutate, isSuccess, reset } = useMutation(crearClienteAPI, {
+		onSuccess: () => {
+			queryClient.invalidateQueries()
+		}
+	})
+
 	// para redirecionar al usuario
 	const navigate = useNavigate();
 
@@ -29,17 +39,17 @@ function Formulario({cliente, cargando}) {
 	// Realizar esta peticion post con React-Query
 	const handleSubmit = async (values) => {
 		
-		crearClienteAPI(values)
+		mutate(values)
 
 			// para redirecionar al usuario
-			navigate("/clientes");
+			// navigate("/clientes");
 
 	};
 
-	return cargando ? (
+	return isLoading ? (
 		<Spinner />
 	) : (
-		<div className=" bg-white mt-10 px-5 py-10 rounded-md shadow-md md:w-3/4 mx-auto">
+			<div className=" bg-white mt-10 px-5 py-10 rounded-md shadow-md md:w-3/4 mx-auto">
 			<h1 className=" text-gray-600 font-bold text-xl uppercase text-center">
 				{cliente?.nombre ? "Editar Cliente" : "Agregar Cliente"}
 			</h1>
@@ -141,7 +151,7 @@ function Formulario({cliente, cargando}) {
 							<input
 								type="submit"
 								value={cliente?.nombre ? "Editar Cliente" : "Agregar Cliente"}
-								className=" mt-5 w-full bg-blue-800 p-3 text-white uppercase font-bold text-lg"
+								className=" mt-5 w-full bg-green-400 p-3 text-white uppercase font-bold text-lg"
 							/>
 						</Form>
 					);
