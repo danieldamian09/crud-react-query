@@ -1,6 +1,7 @@
-import {Formik, Form, Field} from "formik";
+import { useRef } from 'react';
 import {useMutation, useQueryClient} from "react-query";
 import {useNavigate} from "react-router-dom";
+import {Formik, Form, Field} from "formik";
 import * as Yup from "yup";
 import {object} from "yup";
 import {
@@ -10,7 +11,8 @@ import {
 import Alerta from "./Alerta";
 import Spinner from "./Spinner";
 
-function Formulario({cliente}) {
+function Formulario({ cliente }) {
+	
 	const queryClient = useQueryClient();
 
 	const mutationPost = useMutation(crearClienteAPI, {
