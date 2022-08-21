@@ -8,7 +8,7 @@ function Inicio() {
 
 	const queryClient = useQueryClient()
 
-	const { data, isLoading, error } = useQuery("obtenerClientes", obtenerClientesAPI)
+	const { data, isLoading} = useQuery("obtenerClientes", obtenerClientesAPI)
 	
 	const { mutate } = useMutation(eliminarClienteAPI, {
 		onSuccess: () => {

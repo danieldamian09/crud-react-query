@@ -7,7 +7,7 @@ const VerCliente = () => {
 
 	const { id } = useParams();
 
-	const{data, isLoading, error} = useQuery(["obtenerClienteID", id], () => obtenerClienteAPI(id))
+	const{data, isLoading} = useQuery(["obtenerClienteID", id], () => obtenerClienteAPI(id))
 
 
 	return (
@@ -18,7 +18,7 @@ const VerCliente = () => {
 				<p>No hay resultados...</p>
 			) : (
 				<>
-					<h1 className="font-black text-4xl text-blue-900">
+					<h1 className="font-black text-4xl text-green-400">
 						Ver cliente: {data.nombre}
 					</h1>
 					<p className=" mt-3">informacion del cliente</p>

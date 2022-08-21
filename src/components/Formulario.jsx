@@ -1,21 +1,29 @@
 import {Formik, Form, Field} from "formik";
-import { useMutation, useQueryClient } from 'react-query';
+import {useMutation, useQueryClient} from "react-query";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {object} from "yup";
-import { crearClienteAPI } from '../service/serviceClientes';
+import {
+	actualizarClienteAPI,
+	crearClienteAPI,
+} from "../service/serviceClientes";
 import Alerta from "./Alerta";
 import Spinner from "./Spinner";
 
-function Formulario({ cliente }) {
-	
-	const queryClient = useQueryClient()
-	
-	const { data, isLoading, error, mutate, isSuccess, reset } = useMutation(crearClienteAPI, {
+function Formulario({cliente}) {
+	const queryClient = useQueryClient();
+
+	const mutationPost = useMutation(crearClienteAPI, {
 		onSuccess: () => {
-			queryClient.invalidateQueries()
-		}
-	})
+			queryClient.invalidateQueries("obtenerClientes");
+		},
+	});
+
+	const mutationPut = useMutation(actualizarClienteAPI, {
+		onSuccess: () => {
+			queryClient.invalidateQueries("obtenerClientes");
+		},
+	});
 
 	// para redirecionar al usuario
 	const navigate = useNavigate();
@@ -37,19 +45,25 @@ function Formulario({ cliente }) {
 	});
 
 	// Realizar esta peticion post con React-Query
-	const handleSubmit = async (values) => {
-		
-		mutate(values)
+	const handleSubmit = (values) => {
+		console.log(values);
 
-			// para redirecionar al usuario
-			// navigate("/clientes");
+		const {id} = cliente;
 
+		// Validar si es post o put
+		if (id) {
+			mutationPut.mutate({id, values});
+		} else {
+			mutationPost.mutate(values);
+		}
+
+		navigate("/clientes");
 	};
 
-	return isLoading ? (
+	return mutationPost.isLoading ? (
 		<Spinner />
 	) : (
-			<div className=" bg-white mt-10 px-5 py-10 rounded-md shadow-md md:w-3/4 mx-auto">
+		<div className=" bg-white mt-10 px-5 py-10 rounded-md shadow-md md:w-3/4 mx-auto">
 			<h1 className=" text-gray-600 font-bold text-xl uppercase text-center">
 				{cliente?.nombre ? "Editar Cliente" : "Agregar Cliente"}
 			</h1>
@@ -64,8 +78,8 @@ function Formulario({ cliente }) {
 					notas: cliente?.notas ?? "",
 				}}
 				enableReinitialize={true}
-				onSubmit={async (values, {resetForm}) => {
-					await handleSubmit(values);
+				onSubmit={(values, {resetForm}) => {
+					handleSubmit(values);
 					// reset formulario (es asincrono para esperar la respuesta de la API)
 					resetForm();
 				}}
@@ -164,7 +178,7 @@ function Formulario({ cliente }) {
 // Valores por default
 Formulario.defaultProps = {
 	cliente: {},
-	cargando: false
+	cargando: false,
 };
 
 export default Formulario;

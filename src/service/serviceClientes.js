@@ -9,7 +9,6 @@ export const obtenerClienteAPI = async (id) => {
 	}
 };
 
-// Realizar esta peticiones GET con react-query
 export const obtenerClientesAPI = async () => {
 	try {
 		const url = "http://localhost:4000/clientes";
@@ -45,8 +44,24 @@ export const crearClienteAPI = async (values) => {
 				"Content-Type": "application/json",
 			},
 		});
-		  await respuesta.json();
+		await respuesta.json();
+	} catch (error) {
+		console.log(error);
+	}
+};
 
+export const actualizarClienteAPI = async ({id, values}) => {
+	try {
+		const url = `http://localhost:4000/clientes/${id}`;
+
+		const respuesta = await fetch(url, {
+			method: "PUT",
+			body: JSON.stringify(values),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		await respuesta.json();
 	} catch (error) {
 		console.log(error);
 	}

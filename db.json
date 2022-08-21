@@ -9,11 +9,11 @@
       "id": 1
     },
     {
-      "nombre": "Juan",
-      "empresa": "Empresa1",
-      "email": "humbertorivero9@gmail.com",
+      "nombre": "Juan????",
+      "empresa": "React",
+      "email": "juan@juan.com",
       "telefono": "12345678",
-      "notas": "Notas",
+      "notas": "Prueba",
       "id": 2
     }
   ]
